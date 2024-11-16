@@ -5,5 +5,5 @@ export declare class User {
     email: string;
     password: string;
 }
-export declare type UserDocument = User & Document;
+export type UserDocument = User & Document;
 export declare const UserSchema: import("mongoose").Schema<Document<User, any, any>, import("mongoose").Model<Document<User, any, any>, any, any>, undefined, {}>;
