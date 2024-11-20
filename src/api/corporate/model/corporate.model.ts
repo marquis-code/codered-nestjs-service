@@ -43,8 +43,8 @@ export class Corporate {
   @Prop()
   capacity: string;
 
-  @Prop()
-  emergencyEquipment: string;
+  @Prop({ type: Array, required: true})
+  emergencyEquipment: [];
 
   @Prop()
   emergencyContactNumber: string;
