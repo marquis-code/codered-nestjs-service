@@ -1,6 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+// Define the structure of each operating hour
+interface OperatingHour {
+  day: string;
+  startTime: string;
+  endTime: string;
+}
+
 @Schema()
 export class Corporate {
   @Prop()
@@ -21,14 +28,14 @@ export class Corporate {
   @Prop()
   website: string;
 
-  @Prop()
-  operatingHours: string;
+  @Prop({ type: Array, required: true })
+  operatingHours!: OperatingHour[];
 
   @Prop()
   facilityType: string;
 
-  @Prop()
-  availableSpecialties: string;
+  @Prop({ type: Array, required: true})
+  availableSpecialties: []
 
   @Prop()
   emergencyServices: string;
@@ -45,8 +52,8 @@ export class Corporate {
   @Prop()
   emergencyDepartment: string;
 
-  @Prop()
-  doctorOnDutyContact: string;
+  @Prop({ type: Array, required: true})
+  doctorOnDutyContact: [];
 
   @Prop()
   acceptedInsuranceProviders: string;
@@ -68,6 +75,12 @@ export class Corporate {
 
   @Prop()
   telemedicineServices: string;
+
+  @Prop()
+  latitude: string;
+
+  @Prop()
+  longitude: string;
 }
 
 export type CorporateDocument = Corporate & Document;
