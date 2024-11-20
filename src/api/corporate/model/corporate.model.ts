@@ -55,11 +55,11 @@ export class Corporate {
   @Prop({ type: Array, required: true})
   doctorOnDutyContact: [];
 
-  @Prop()
-  acceptedInsuranceProviders: string;
+  @Prop({ type: Array, required: true})
+  acceptedInsuranceProviders: [];
 
-  @Prop()
-  emergencyPaymentPolicies: string;
+  @Prop({ type: Array, required: true})
+  emergencyPaymentPolicies: [];
 
   @Prop()
   expectedResponseTime: string;
