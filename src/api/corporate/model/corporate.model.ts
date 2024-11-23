@@ -81,6 +81,45 @@ export class Corporate {
 
   @Prop()
   longitude: string;
+
+  @Prop()
+  availableBeds: string;
+
+
+  @Prop()
+  occupiedBeds: string;
+
+  @Prop()
+  admissions: string;
+
+  @Prop()
+  staffOnGround: string;
+
+  @Prop({ type: Array, required: true, default: [] })
+dailyBedUsage: {
+  day: string;
+  availableBeds: number;
+  occupiedBeds: number;
+}[];
+
+@Prop({ type: Array, required: true, default: [] })
+monthlyAdmissions: {
+  month: string;
+  admissions: number;
+}[];
+
+@Prop({ type: Array, required: true, default: [] })
+dailyOccupancyRates: {
+  day: string;
+  occupancyRate: number; // percentage
+}[];
+
+@Prop({ type: Array, required: true, default: [] })
+dailyTurnoverRates: {
+  day: string;
+  turnoverRate: number;
+}[];
+
 }
 
 export type CorporateDocument = Corporate & Document;

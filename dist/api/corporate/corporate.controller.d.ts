@@ -9,4 +9,13 @@ export declare class CorporateController {
         username: string;
         password: string;
     }): Promise<any>;
+    seedData(): Promise<{
+        message: string;
+    }>;
+    getBedSpaceUtilization(): Promise<any>;
+    getAdmissionTrends(): Promise<any>;
+    getOccupancyRates(): Promise<any>;
+    getTurnoverRates(): Promise<any>;
+    getCorporateProfile(id: string): Promise<any>;
+    editCorporateProfile(id: string, updateData: any): Promise<any>;
 }

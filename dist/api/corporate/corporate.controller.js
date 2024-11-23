@@ -27,6 +27,27 @@ let CorporateController = CorporateController_1 = class CorporateController {
     async loginCorporate(body) {
         return await this.corporateService.login(body.username, body.password);
     }
+    async seedData() {
+        return this.corporateService.seedData();
+    }
+    async getBedSpaceUtilization() {
+        return this.corporateService.getBedSpaceUtilization();
+    }
+    async getAdmissionTrends() {
+        return this.corporateService.getAdmissionTrends();
+    }
+    async getOccupancyRates() {
+        return this.corporateService.getOccupancyRates();
+    }
+    async getTurnoverRates() {
+        return this.corporateService.getTurnoverRates();
+    }
+    async getCorporateProfile(id) {
+        return this.corporateService.getCorporateProfile(id);
+    }
+    async editCorporateProfile(id, updateData) {
+        return this.corporateService.editCorporateProfile(id, updateData);
+    }
 };
 __decorate([
     (0, common_1.Post)("create"),
@@ -42,6 +63,51 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CorporateController.prototype, "loginCorporate", null);
+__decorate([
+    (0, common_1.Post)('seed'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "seedData", null);
+__decorate([
+    (0, common_1.Get)('bed-space-utilization'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "getBedSpaceUtilization", null);
+__decorate([
+    (0, common_1.Get)('admission-trends'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "getAdmissionTrends", null);
+__decorate([
+    (0, common_1.Get)('occupancy-rates'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "getOccupancyRates", null);
+__decorate([
+    (0, common_1.Get)('turnover-rates'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "getTurnoverRates", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "getCorporateProfile", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CorporateController.prototype, "editCorporateProfile", null);
 CorporateController = CorporateController_1 = __decorate([
     (0, common_1.Controller)("corporate"),
     __metadata("design:paramtypes", [corporate_service_1.CorporateService])

@@ -38,16 +38,16 @@ __decorate([
     __metadata("design:type", String)
 ], Corporate.prototype, "website", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "operatingHours", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Corporate.prototype, "facilityType", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "availableSpecialties", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
@@ -58,8 +58,8 @@ __decorate([
     __metadata("design:type", String)
 ], Corporate.prototype, "capacity", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "emergencyEquipment", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
@@ -70,16 +70,16 @@ __decorate([
     __metadata("design:type", String)
 ], Corporate.prototype, "emergencyDepartment", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "doctorOnDutyContact", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "acceptedInsuranceProviders", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ type: Array, required: true }),
+    __metadata("design:type", Array)
 ], Corporate.prototype, "emergencyPaymentPolicies", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
@@ -101,6 +101,46 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Corporate.prototype, "telemedicineServices", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "latitude", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "longitude", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "availableBeds", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "occupiedBeds", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "admissions", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Corporate.prototype, "staffOnGround", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Array, required: true, default: [] }),
+    __metadata("design:type", Array)
+], Corporate.prototype, "dailyBedUsage", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Array, required: true, default: [] }),
+    __metadata("design:type", Array)
+], Corporate.prototype, "monthlyAdmissions", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Array, required: true, default: [] }),
+    __metadata("design:type", Array)
+], Corporate.prototype, "dailyOccupancyRates", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Array, required: true, default: [] }),
+    __metadata("design:type", Array)
+], Corporate.prototype, "dailyTurnoverRates", void 0);
 Corporate = __decorate([
     (0, mongoose_1.Schema)()
 ], Corporate);

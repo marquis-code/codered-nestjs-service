@@ -102,7 +102,99 @@ let CorporateService = CorporateService_1 = class CorporateService {
         const randomSuffix = crypto.randomInt(1000, 9999).toString();
         return `${cleanHospitalName}_${cleanAddress}_${randomSuffix}`;
     }
+    async seedData() {
+        this.logger.log("Seeding in-memory corporate data.");
+        const dummyData = {
+            hospitalName: 'General Hospital',
+            dailyBedUsage: [
+                { day: 'Monday', availableBeds: 30, occupiedBeds: 20 },
+                { day: 'Tuesday', availableBeds: 25, occupiedBeds: 25 },
+                { day: 'Wednesday', availableBeds: 20, occupiedBeds: 30 },
+                { day: 'Thursday', availableBeds: 15, occupiedBeds: 35 },
+                { day: 'Friday', availableBeds: 10, occupiedBeds: 40 },
+                { day: 'Saturday', availableBeds: 8, occupiedBeds: 42 },
+                { day: 'Sunday', availableBeds: 5, occupiedBeds: 45 },
+            ],
+            monthlyAdmissions: [
+                { month: 'January', admissions: 120 },
+                { month: 'February', admissions: 150 },
+                { month: 'March', admissions: 200 },
+                { month: 'April', admissions: 250 },
+                { month: 'May', admissions: 180 },
+                { month: 'June', admissions: 220 },
+                { month: 'July', admissions: 240 },
+                { month: 'August', admissions: 210 },
+                { month: 'September', admissions: 190 },
+                { month: 'October', admissions: 230 },
+                { month: 'November', admissions: 260 },
+                { month: 'December', admissions: 300 },
+            ],
+            dailyOccupancyRates: [
+                { day: 'Monday', occupancyRate: 66.7 },
+                { day: 'Tuesday', occupancyRate: 83.3 },
+                { day: 'Wednesday', occupancyRate: 88.0 },
+                { day: 'Thursday', occupancyRate: 93.3 },
+                { day: 'Friday', occupancyRate: 96.7 },
+                { day: 'Saturday', occupancyRate: 98.0 },
+                { day: 'Sunday', occupancyRate: 100.0 },
+            ],
+            dailyTurnoverRates: [
+                { day: 'Monday', turnoverRate: 5 },
+                { day: 'Tuesday', turnoverRate: 8 },
+                { day: 'Wednesday', turnoverRate: 6 },
+                { day: 'Thursday', turnoverRate: 7 },
+                { day: 'Friday', turnoverRate: 9 },
+                { day: 'Saturday', turnoverRate: 4 },
+                { day: 'Sunday', turnoverRate: 3 },
+            ],
+        };
+        CorporateService_1.seededData = dummyData;
+        this.logger.log("In-memory data seeded successfully.");
+        return { message: 'Data seeded in memory successfully.' };
+    }
+    async getBedSpaceUtilization() {
+        if (!CorporateService_1.seededData) {
+            throw new Error('Data not seeded yet.');
+        }
+        return CorporateService_1.seededData.dailyBedUsage;
+    }
+    async getAdmissionTrends() {
+        if (!CorporateService_1.seededData) {
+            throw new Error('Data not seeded yet.');
+        }
+        return CorporateService_1.seededData.monthlyAdmissions;
+    }
+    async getOccupancyRates() {
+        if (!CorporateService_1.seededData) {
+            throw new Error('Data not seeded yet.');
+        }
+        return CorporateService_1.seededData.dailyOccupancyRates;
+    }
+    async getTurnoverRates() {
+        if (!CorporateService_1.seededData) {
+            throw new Error('Data not seeded yet.');
+        }
+        return CorporateService_1.seededData.dailyTurnoverRates;
+    }
+    async getCorporateProfile(id) {
+        const corporate = await this.corporateModel.findById(id);
+        if (!corporate) {
+            throw new common_1.NotFoundException('Corporate profile not found');
+        }
+        return corporate;
+    }
+    async editCorporateProfile(id, updateData) {
+        const updatedCorporate = await this.corporateModel.findByIdAndUpdate(id, updateData, { new: true });
+        if (!updatedCorporate) {
+            throw new common_1.NotFoundException('Corporate profile not found');
+        }
+        return {
+            message: 'Corporate profile updated successfully',
+            corporate: updatedCorporate,
+        };
+    }
 };
+CorporateService.seededData = null;
 CorporateService = CorporateService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(corporate_model_1.Corporate.name)),
