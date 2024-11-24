@@ -36,6 +36,176 @@ let CorporateService = CorporateService_1 = class CorporateService {
         this.corporateModel = corporateModel;
         this.AuthService = AuthService;
         this.logger = new common_1.Logger(CorporateService_1.name);
+        this.seedData()
+            .then(() => this.logger.log("In-memory data seeded during service initialization."))
+            .catch((err) => this.logger.error("Error seeding data:", err));
+    }
+    async seedData() {
+        if (CorporateService_1.seededData) {
+            this.logger.log("Data already seeded. Skipping.");
+            return { message: "Data already seeded." };
+        }
+        this.logger.log("Seeding in-memory corporate data.");
+        const dummyData = {
+            hospitalName: "General Hospital",
+            dailyBedUsage: [
+                { day: "Monday", availableBeds: 30, occupiedBeds: 20 },
+                { day: "Tuesday", availableBeds: 25, occupiedBeds: 25 },
+                { day: "Wednesday", availableBeds: 20, occupiedBeds: 30 },
+                { day: "Thursday", availableBeds: 15, occupiedBeds: 35 },
+                { day: "Friday", availableBeds: 10, occupiedBeds: 40 },
+                { day: "Saturday", availableBeds: 8, occupiedBeds: 42 },
+                { day: "Sunday", availableBeds: 5, occupiedBeds: 45 },
+            ],
+            monthlyAdmissions: [
+                { month: "January", admissions: 120 },
+                { month: "February", admissions: 150 },
+                { month: "March", admissions: 200 },
+                { month: "April", admissions: 250 },
+                { month: "May", admissions: 180 },
+                { month: "June", admissions: 220 },
+                { month: "July", admissions: 240 },
+                { month: "August", admissions: 210 },
+                { month: "September", admissions: 190 },
+                { month: "October", admissions: 230 },
+                { month: "November", admissions: 260 },
+                { month: "December", admissions: 300 },
+            ],
+            dailyOccupancyRates: [
+                { day: "Monday", occupancyRate: 66.7 },
+                { day: "Tuesday", occupancyRate: 83.3 },
+                { day: "Wednesday", occupancyRate: 88.0 },
+                { day: "Thursday", occupancyRate: 93.3 },
+                { day: "Friday", occupancyRate: 96.7 },
+                { day: "Saturday", occupancyRate: 98.0 },
+                { day: "Sunday", occupancyRate: 100.0 },
+            ],
+            dailyTurnoverRates: [
+                { day: "Monday", turnoverRate: 5 },
+                { day: "Tuesday", turnoverRate: 8 },
+                { day: "Wednesday", turnoverRate: 6 },
+                { day: "Thursday", turnoverRate: 7 },
+                { day: "Friday", turnoverRate: 9 },
+                { day: "Saturday", turnoverRate: 4 },
+                { day: "Sunday", turnoverRate: 3 },
+            ],
+            averageStayDurations: [
+                { department: "ICU", averageDays: 5 },
+                { department: "ER", averageDays: 1 },
+                { department: "General Ward", averageDays: 3 },
+                { department: "Pediatrics", averageDays: 4 },
+                { department: "Surgery", averageDays: 6 },
+            ],
+            mostCommonAdmissions: [
+                { condition: "Flu", count: 300 },
+                { condition: "Fractures", count: 200 },
+                { condition: "Heart Attacks", count: 150 },
+                { condition: "Asthma", count: 180 },
+                { condition: "COVID-19", count: 120 },
+            ],
+        };
+        CorporateService_1.seededData = dummyData;
+        this.logger.log("In-memory data seeded successfully.");
+        return { message: "Data seeded in memory successfully." };
+    }
+    async getBedSpaceUtilization() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.dailyBedUsage;
+    }
+    async getAdmissionTrends() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.monthlyAdmissions;
+    }
+    async getOccupancyRates() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.dailyOccupancyRates;
+    }
+    async getTurnoverRates() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.dailyTurnoverRates;
+    }
+    async getAverageStayDurations() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.averageStayDurations;
+    }
+    async getMostCommonAdmissions() {
+        if (!CorporateService_1.seededData) {
+            this.logger.warn("Data not seeded. Seeding now.");
+            await this.seedData();
+        }
+        return CorporateService_1.seededData.mostCommonAdmissions;
+    }
+    async getCorporateProfile(id) {
+        const corporate = await this.corporateModel.findById(id);
+        if (!corporate) {
+            throw new common_1.NotFoundException('Corporate profile not found');
+        }
+        return corporate;
+    }
+    async editCorporateProfile(id, updateData) {
+        const updatedCorporate = await this.corporateModel.findByIdAndUpdate(id, updateData, { new: true });
+        if (!updatedCorporate) {
+            throw new common_1.NotFoundException('Corporate profile not found');
+        }
+        return {
+            message: 'Corporate profile updated successfully',
+            corporate: updatedCorporate,
+        };
+    }
+    generateUsername(hospitalName, address) {
+        const cleanHospitalName = hospitalName
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .toLowerCase();
+        const cleanAddress = address.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        const randomSuffix = crypto.randomInt(1000, 9999).toString();
+        return `${cleanHospitalName}_${cleanAddress}_${randomSuffix}`;
+    }
+    async findOneAndUpdate(query, payload) {
+        this.logger.log("Updating User.");
+        return this.corporateModel.findOneAndUpdate(query, payload, {
+            new: true,
+            upsert: true,
+        });
+    }
+    async findOneAndRemove(query) {
+        return this.corporateModel.findOneAndRemove(query);
+    }
+    async login(username, password) {
+        this.logger.log(`Logging in corporate user: ${username}`);
+        const corporate = await this.corporateModel
+            .findOne({ username })
+            .select("+password");
+        if (!corporate) {
+            throw new common_1.UnauthorizedException("Invalid username or password.");
+        }
+        const isPasswordValid = await this.AuthService.comparePasswords(password, corporate.password);
+        if (!isPasswordValid) {
+            throw new common_1.UnauthorizedException("Invalid username or password.");
+        }
+        const token = await this.AuthService.generateJwtToken({
+            email: corporate.contactInformation,
+        });
+        const _a = corporate.toObject(), { password: _ } = _a, corporateDetails = __rest(_a, ["password"]);
+        return {
+            message: "Login successful.",
+            token,
+            corporate: corporateDetails,
+        };
     }
     async findOne(query) {
         return await this.corporateModel.findOne(query).select("+password");
@@ -60,137 +230,6 @@ let CorporateService = CorporateService_1 = class CorporateService {
         return {
             message: "Corporate user created successfully.",
             username: derivedUsername,
-        };
-    }
-    async login(username, password) {
-        this.logger.log(`Logging in corporate user: ${username}`);
-        const corporate = await this.corporateModel
-            .findOne({ username })
-            .select("+password");
-        if (!corporate) {
-            throw new common_1.UnauthorizedException("Invalid username or password.");
-        }
-        const isPasswordValid = await this.AuthService.comparePasswords(password, corporate.password);
-        if (!isPasswordValid) {
-            throw new common_1.UnauthorizedException("Invalid username or password.");
-        }
-        const token = await this.AuthService.generateJwtToken({
-            email: corporate.contactInformation,
-        });
-        const _a = corporate.toObject(), { password: _ } = _a, corporateDetails = __rest(_a, ["password"]);
-        return {
-            message: "Login successful.",
-            token,
-            corporate: corporateDetails,
-        };
-    }
-    async findOneAndUpdate(query, payload) {
-        this.logger.log("Updating User.");
-        return this.corporateModel.findOneAndUpdate(query, payload, {
-            new: true,
-            upsert: true,
-        });
-    }
-    async findOneAndRemove(query) {
-        return this.corporateModel.findOneAndRemove(query);
-    }
-    generateUsername(hospitalName, address) {
-        const cleanHospitalName = hospitalName
-            .replace(/[^a-zA-Z0-9]/g, "")
-            .toLowerCase();
-        const cleanAddress = address.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-        const randomSuffix = crypto.randomInt(1000, 9999).toString();
-        return `${cleanHospitalName}_${cleanAddress}_${randomSuffix}`;
-    }
-    async seedData() {
-        this.logger.log("Seeding in-memory corporate data.");
-        const dummyData = {
-            hospitalName: 'General Hospital',
-            dailyBedUsage: [
-                { day: 'Monday', availableBeds: 30, occupiedBeds: 20 },
-                { day: 'Tuesday', availableBeds: 25, occupiedBeds: 25 },
-                { day: 'Wednesday', availableBeds: 20, occupiedBeds: 30 },
-                { day: 'Thursday', availableBeds: 15, occupiedBeds: 35 },
-                { day: 'Friday', availableBeds: 10, occupiedBeds: 40 },
-                { day: 'Saturday', availableBeds: 8, occupiedBeds: 42 },
-                { day: 'Sunday', availableBeds: 5, occupiedBeds: 45 },
-            ],
-            monthlyAdmissions: [
-                { month: 'January', admissions: 120 },
-                { month: 'February', admissions: 150 },
-                { month: 'March', admissions: 200 },
-                { month: 'April', admissions: 250 },
-                { month: 'May', admissions: 180 },
-                { month: 'June', admissions: 220 },
-                { month: 'July', admissions: 240 },
-                { month: 'August', admissions: 210 },
-                { month: 'September', admissions: 190 },
-                { month: 'October', admissions: 230 },
-                { month: 'November', admissions: 260 },
-                { month: 'December', admissions: 300 },
-            ],
-            dailyOccupancyRates: [
-                { day: 'Monday', occupancyRate: 66.7 },
-                { day: 'Tuesday', occupancyRate: 83.3 },
-                { day: 'Wednesday', occupancyRate: 88.0 },
-                { day: 'Thursday', occupancyRate: 93.3 },
-                { day: 'Friday', occupancyRate: 96.7 },
-                { day: 'Saturday', occupancyRate: 98.0 },
-                { day: 'Sunday', occupancyRate: 100.0 },
-            ],
-            dailyTurnoverRates: [
-                { day: 'Monday', turnoverRate: 5 },
-                { day: 'Tuesday', turnoverRate: 8 },
-                { day: 'Wednesday', turnoverRate: 6 },
-                { day: 'Thursday', turnoverRate: 7 },
-                { day: 'Friday', turnoverRate: 9 },
-                { day: 'Saturday', turnoverRate: 4 },
-                { day: 'Sunday', turnoverRate: 3 },
-            ],
-        };
-        CorporateService_1.seededData = dummyData;
-        this.logger.log("In-memory data seeded successfully.");
-        return { message: 'Data seeded in memory successfully.' };
-    }
-    async getBedSpaceUtilization() {
-        if (!CorporateService_1.seededData) {
-            throw new Error('Data not seeded yet.');
-        }
-        return CorporateService_1.seededData.dailyBedUsage;
-    }
-    async getAdmissionTrends() {
-        if (!CorporateService_1.seededData) {
-            throw new Error('Data not seeded yet.');
-        }
-        return CorporateService_1.seededData.monthlyAdmissions;
-    }
-    async getOccupancyRates() {
-        if (!CorporateService_1.seededData) {
-            throw new Error('Data not seeded yet.');
-        }
-        return CorporateService_1.seededData.dailyOccupancyRates;
-    }
-    async getTurnoverRates() {
-        if (!CorporateService_1.seededData) {
-            throw new Error('Data not seeded yet.');
-        }
-        return CorporateService_1.seededData.dailyTurnoverRates;
-    }
-    async getCorporateProfile(id) {
-        const corporate = await this.corporateModel.findById(id);
-        if (!corporate) {
-            throw new common_1.NotFoundException('Corporate profile not found');
-        }
-        return corporate;
-    }
-    async editCorporateProfile(id, updateData) {
-        const updatedCorporate = await this.corporateModel.findByIdAndUpdate(id, updateData, { new: true });
-        if (!updatedCorporate) {
-            throw new common_1.NotFoundException('Corporate profile not found');
-        }
-        return {
-            message: 'Corporate profile updated successfully',
-            corporate: updatedCorporate,
         };
     }
 };
